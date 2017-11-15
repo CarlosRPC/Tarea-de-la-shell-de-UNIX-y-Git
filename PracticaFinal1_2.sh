@@ -5,4 +5,4 @@ do
 	IDP=$(echo $lin | cut -d ',' -f3)
 	PRV=$(echo $lin | cut -d ',' -f4)
 	mkdir -p $IDC\_"$CA"/$IDP\_"$PRV"
-done < CAPROV.txt
+done < Ca-Prov.txt
