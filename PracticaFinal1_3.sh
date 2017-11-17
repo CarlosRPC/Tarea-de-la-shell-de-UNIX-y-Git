@@ -5,29 +5,24 @@ do
 	i=0
 	for mes in ${meses[@]}
 	do
-		 i += 1
-		 if [ i < 10 ]; then
+		i=$(( i + 1 ))
+		if [ i < 10 ]; then
 			m=0$i
-		 else
+		else
 			m=$i
-		 fi
-		 while read line
-		 do
+		fi
+		awk 'NR>9{print $0}' temp/Agosto_2011/T_127P_0811.txt | tr -s [:blank:] "," > provisional.txt
+		#Quitamos la cabecera y todos los espacios se sustituyen por una coma.
+		sed -i -e 's/S.C./S-C-/g' -e 's/\.//g' -e 's/\-/\./g' -e 's/\([A-Z]\)\,\([A-Z]\)/\1\ \2/g' provisional.txt	
+		#Quitamos los puntos, teniendo cuidado con los puntos de *S.C.TENERIFE*, y las comas entre las provincias.
+		while read line
+		do
 			 IDC=$(echo $lin | cut -d ',' -f1)
 			 CA=$(echo $lin | cut -d ',' -f2)
 			 IDP=$(echo $lin | cut -d ',' -f3)
 			 PRV=$(echo $lin | cut -d ',' -f4)
-		 
-			 sed -n '/$PRV/ w ficherito.dat' temp/$mes_$year/T_127P*.txt
-			 sed -i -e 's/LA RIOJA *//' -e 's/ LA RIOJA$//' ficherito.dat
-			 awk '{print value, $1}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Nuclear.txt
-			 awk '{print value, $2}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Carbones.txt
-			 awk '{print value, $3}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Lignitos.txt
-			 awk '{print value, $4}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Fuel.txt
-			 awk '{print value, $5}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/GasNatural.txt
-			 awk '{print value, $6}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Otros.txt
-			 awk '{print value, $7}' value=$year$m ficherito.dat >> $IDC\_"$CA"/$IDP\_"$PRV"/Total.txt
-		 done < Ca-Prov.txt
+		
+		done < Ca-Prov.txt
 	done
 done
 
