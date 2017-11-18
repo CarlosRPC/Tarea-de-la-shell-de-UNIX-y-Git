@@ -1,8 +1,6 @@
-while read lin
+while read linea
 do
-	IDC=$(echo $lin | cut -d ',' -f1)
-	CA=$(echo $lin | cut -d ',' -f2)
-	IDP=$(echo $lin | cut -d ',' -f3)
-	PRV=$(echo $lin | cut -d ',' -f4)
-	mkdir -p $IDC\_"$CA"/$IDP\_"$PRV"
+	ID_C=$(echo $linea | cut -d ',' -f1)\_$(echo $linea | cut -d ',' -f2)
+	ID_P=$(echo $linea | cut -d ',' -f3)\_$(echo $linea | cut -d ',' -f4)
+	mkdir -p "$ID_C"/"$ID_P"
 done < Ca-Prov.txt
